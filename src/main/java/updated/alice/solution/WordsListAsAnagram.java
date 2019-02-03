@@ -1,11 +1,15 @@
 package updated.alice.solution;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.concurrent.*;
 
 public class WordsListAsAnagram {
+
+    private BlockingQueue<Runnable> allWorkers = new LinkedBlockingQueue<Runnable>(10000000);
+    private ExecutorService executorService = new ThreadPoolExecutor(3, 5, 10, TimeUnit.SECONDS, allWorkers);
 
     private List<String> filteredWords;
     private int numberOfCombinations;
@@ -55,7 +59,7 @@ public class WordsListAsAnagram {
 
     public List<List<String>> createWordsListAsAnagram() {
 
-        List<List<String>> allCombinations = new LinkedList<List<String>>();
+        List<List<String>> allCombinations = Collections.synchronizedList(new LinkedList<List<String>>());
         combinationUtil(allCombinations, filteredWords, new String[numberOfCombinations],
                             0, filteredWords.size()-1, 0, numberOfCombinations,
                                 anagramSolutionLettersMap, anagramSolutionLength);
@@ -71,13 +75,11 @@ public class WordsListAsAnagram {
                 combination.add(data[j]);
             }
 
-            String combinationString = combination.stream().collect(Collectors.joining(""));
+            String combinationString = String.join("", combination);
             if (combinationString.length() == anagramSolutionLength) {
 
-                Map<String, Integer> combinationLettersMap = Utils.createLettersMapFromWord(combinationString);
-                if(AnagramUtils.areTheseWordsAnagrams(anagramSolutionLettersMap, combinationLettersMap)) {
-                    allCombinations.add(combination);
-                }
+                SearchThread searchThread = new SearchThread(combination, anagramSolutionLettersMap, allCombinations, combinationString);
+                executorService.execute(searchThread); // submit task
             }
             return;
         }
