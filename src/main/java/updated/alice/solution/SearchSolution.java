@@ -2,7 +2,6 @@ package updated.alice.solution;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -21,9 +20,10 @@ public class SearchSolution {
      * @return answer
      * @throws NoSuchAlgorithmException if MD5 cryptographic algorithm is not available in the environment
      */
-    public List<String> search(String solutionAnagram, List<String> allWords, String solutionMD5Hash, int minLengthWord) throws NoSuchAlgorithmException {
+    public Set<String> search(String solutionAnagram, List<String> allWords, String solutionMD5Hash, int minLengthWord) throws NoSuchAlgorithmException {
 
-        System.out.println("Start " + new Date().toString());
+        Date startDate = new Date();
+        System.out.println("Start " + startDate.toString());
         System.out.println("Solution anagram: " + solutionAnagram);
         System.out.println("Solution md5 hash: " + solutionMD5Hash);
 
@@ -39,11 +39,12 @@ public class SearchSolution {
         int numberOfWords = Utils.numberOfWordsInSolutionAnagram(solutionAnagram);
         System.out.println("Number Of words in anagram " + numberOfWords);
 
-        // Search solution
-        List<String> allSolutions = searchListOfWordsAsAnagram(solutionAnagramWithoutSpaces, filteredWords, solutionMD5Hash, numberOfWords);
+        Set<String> allSolutions = searchListOfWordsAsAnagram(solutionAnagramWithoutSpaces, filteredWords, solutionMD5Hash, numberOfWords);
 
         // Stop time
-        System.out.println("Stop time: " + new Date().toString());
+        Date stopDate = new Date();
+        System.out.println("Stop time: " + stopDate.toString());
+        System.out.println("Solution took: " + ((stopDate.getTime() - startDate.getTime()) / 1000) + " s.");
         return allSolutions;
     }
 
@@ -58,22 +59,23 @@ public class SearchSolution {
      * @return list of words as anagram
      * @throws NoSuchAlgorithmException if MD5 cryptographic algorithm is not available in the environment
      */
-    private List<String> searchListOfWordsAsAnagram(String solutionAnagram, List<String> filteredWords, String solutionMD5Hash, int howManyWords) throws NoSuchAlgorithmException {
+    private Set<String> searchListOfWordsAsAnagram(String solutionAnagram, List<String> filteredWords, String solutionMD5Hash, int howManyWords) throws NoSuchAlgorithmException {
 
         Map<String, Integer> anagramSolutionLettersMap = Utils.createLettersMapFromWord(solutionAnagram);
         int anagramSolutionLength = solutionAnagram.length();
-        int anagramSolutionHash = solutionAnagram.hashCode();
 
-        List<String> allSolutions = new LinkedList<String>();
+        Set<String> allSolutions = new HashSet<String>();
         WordsListAsAnagram wordAnagrams = new WordsListAsAnagram()
                 .addWordsList(filteredWords)
                 .addNumberOfCombinations(howManyWords)
                 .addAnagramSolutionLettersMap(anagramSolutionLettersMap)
                 .addAnagramSolutionLength(anagramSolutionLength)
+                .isMultithreadingEnabled(true)
                 .create();
 
         // Create words list, anagram
         List<List<String>> allAtempts = wordAnagrams.createWordsListAsAnagram();
+        wordAnagrams.stopExecutorService();
         for (List<String> wordsList : allAtempts) {
 
             // Create list of all possible words combination in list
@@ -81,12 +83,11 @@ public class SearchSolution {
             
             for (String[] combinationOne : wordCombinations) {
                 // Try if words combination is a solution
-                String solutionAttempt =  Arrays.asList(combinationOne).stream().collect(Collectors.joining(" "));
+                String solutionAttempt =  String.join(" ", combinationOne);
 
                 // if MD5 hash equals it is solution
                 if (Utils.calcMD5Hash(solutionAttempt).equals(solutionMD5Hash)) {
                     allSolutions.add(solutionAttempt);
-                    return allSolutions;
                 }
             }
         }

@@ -11,4 +11,4 @@ RUN chown -R appuser:appgroup /app
 
 USER appuser
 
-CMD java -jar alice-solution-1.0.jar "23170acc097c24edb98fc5488ab033fe" "poultry outwits ants" "wordlist" "1"
+CMD java -Xms1g -Xmx2g -jar alice-solution-*.jar "23170acc097c24edb98fc5488ab033fe" "poultry outwits ants" "wordlist" "1"

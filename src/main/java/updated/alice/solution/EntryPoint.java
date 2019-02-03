@@ -2,6 +2,7 @@ package updated.alice.solution;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -27,7 +28,7 @@ public class EntryPoint {
             }
 
             List<String> words = Utils.readFile(args[2]);
-            List<String> answers = new SearchSolution().search(args[1], words, args[0], minLengthOfWord);
+            Set<String> answers = new SearchSolution().search(args[1], words, args[0], minLengthOfWord);
             System.out.println("Answer: " + answers);
         }
     }

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.security.NoSuchAlgorithmException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 public class SearchSolutionTest {
 
@@ -27,7 +28,7 @@ public class SearchSolutionTest {
         allWords.add("aaposabc");
         allWords.add("aabacabc");
 
-        List<String> answers = new SearchSolution().search(solutionAnagram, allWords, Utils.calcMD5Hash(solution), 1);
+        Set<String> answers = new SearchSolution().search(solutionAnagram, allWords, Utils.calcMD5Hash(solution), 1);
         Assertions.assertEquals(1, answers.size());
 
         String returnAnswer = String.join(",", answers).replaceAll(",", "");
@@ -51,7 +52,7 @@ public class SearchSolutionTest {
         allWords.add("aaposabc");
         allWords.add("aabacabc");
 
-        List<String> answers = new SearchSolution().search(solutionAnagram, allWords, Utils.calcMD5Hash(solutionAnagram), 1);
+        Set<String> answers = new SearchSolution().search(solutionAnagram, allWords, Utils.calcMD5Hash(solutionAnagram), 1);
         Assertions.assertEquals(1, answers.size());
 
         String returnAnswer = String.join(",", answers).replaceAll(",", " ");
@@ -77,7 +78,7 @@ public class SearchSolutionTest {
         allWords.add("aaposabc");
         allWords.add("cbacabaa");
 
-        List<String> answers = new SearchSolution().search(solutionAnagram, allWords, Utils.calcMD5Hash(solution), 1);
+        Set<String> answers = new SearchSolution().search(solutionAnagram, allWords, Utils.calcMD5Hash(solution), 1);
         Assertions.assertEquals(1, answers.size());
 
         String returnAnswer = String.join(",", answers).replaceAll(",", " ");
@@ -104,7 +105,7 @@ public class SearchSolutionTest {
         allWords.add("cbac");
         allWords.add("abaa");
 
-        List<String> answers = new SearchSolution().search(solutionAnagram, allWords, Utils.calcMD5Hash(solution),1);
+        Set<String> answers = new SearchSolution().search(solutionAnagram, allWords, Utils.calcMD5Hash(solution),1);
         Assertions.assertEquals(1, answers.size());
 
         String returnAnswer = String.join(",", answers).replaceAll(",", " ");
@@ -118,7 +119,7 @@ public class SearchSolutionTest {
         String solutionAnagram = "abaci";
         List<String> words = DummyData.createSampleWordsList();
 
-        List<String> answers = new SearchSolution().search(solutionAnagram, words, Utils.calcMD5Hash(solution), 1);
+        Set<String> answers = new SearchSolution().search(solutionAnagram, words, Utils.calcMD5Hash(solution), 1);
         Assertions.assertEquals(1, answers.size());
 
         String returnAnswer = String.join(",", answers).replaceAll(",", " ");
@@ -132,7 +133,7 @@ public class SearchSolutionTest {
         String solutionAnagram = "abaci abacus";
         List<String> words = DummyData.createSampleWordsList();
 
-        List<String> answers = new SearchSolution().search(solutionAnagram, words, Utils.calcMD5Hash(solution), 1);
+        Set<String> answers = new SearchSolution().search(solutionAnagram, words, Utils.calcMD5Hash(solution), 1);
         Assertions.assertEquals(1, answers.size());
 
         String returnAnswer = String.join(",", answers).replaceAll(",", " ");
@@ -146,7 +147,7 @@ public class SearchSolutionTest {
         String solutionAnagram = "asia abaci abacus";
         List<String> words = DummyData.createSampleWordsList();
 
-        List<String> answers = new SearchSolution().search(solutionAnagram, words, Utils.calcMD5Hash(solution), 1);
+        Set<String> answers = new SearchSolution().search(solutionAnagram, words, Utils.calcMD5Hash(solution), 1);
         Assertions.assertEquals(1, answers.size());
 
         String returnAnswer = String.join(",", answers).replaceAll(",", " ");
@@ -160,7 +161,7 @@ public class SearchSolutionTest {
         String solutionAnagram = "bust bulish";
         List<String> words = DummyData.createSampleWordsList();
 
-        List<String> answers = new SearchSolution().search(solutionAnagram, words, Utils.calcMD5Hash(solution), 1);
+        Set<String> answers = new SearchSolution().search(solutionAnagram, words, Utils.calcMD5Hash(solution), 1);
         Assertions.assertEquals(1, answers.size());
 
         String returnAnswer = String.join(",", answers).replaceAll(",", " ");
